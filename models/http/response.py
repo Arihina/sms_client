@@ -6,7 +6,7 @@ from models.http.base import BaseHttp
 class HttpResponse(BaseHttp):
     def __init__(self, version: str, date: str,
                  content_type: str, content_length: int,
-                 status_code: int,
+                 status_code: str,
                  body: dict[str, str] | None):
         """
         Initializes a HttpResponse object representing the HTTP response.
@@ -24,7 +24,7 @@ class HttpResponse(BaseHttp):
         self.__date = date
 
     @property
-    def status_code(self) -> int:
+    def status_code(self) -> str:
         return self.__status_code
 
     @property
@@ -32,7 +32,7 @@ class HttpResponse(BaseHttp):
         return self.__date
 
     @status_code.setter
-    def status_code(self, status_code: int) -> None:
+    def status_code(self, status_code: str) -> None:
         self.__status_code = status_code
 
     @date.setter
