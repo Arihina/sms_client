@@ -47,7 +47,7 @@ def test_from_binary():
                             "application/json", 42, "200 OK",
                             {"status": "success", "message_id": "123456"})
 
-    assert request1.__repr__() == request2.__repr__()
+    assert str(request1) == str(request2)
 
 
 if __name__ == '__main__':
