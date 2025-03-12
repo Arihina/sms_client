@@ -10,7 +10,15 @@ class SocketClient:
         """
         Initializes a new SocketClient object.
         """
-        self.client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.__client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+    @property
+    def client(self) -> socket.socket:
+        return self.__client
+
+    @client.setter
+    def client(self, client: socket.socket) -> None:
+        self.__client = client
 
     def open_connection(self, host: str, port: int) -> None:
         """

@@ -1,3 +1,3 @@
 """
-The package contains client's implementations
+The package contains client's implementation
 """
