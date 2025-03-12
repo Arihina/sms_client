@@ -1,0 +1,10 @@
+title = "Config"
+
+[user]
+name = "user"
+password = "12345"
+
+[servers]
+[servers.sms]
+url = "http://localhost:4010/send_sms"
+
