@@ -1,9 +1,8 @@
-import socket
-
+from client_service.socket import SocketClient
 from utils.loader.toml import TomlLoader
 from utils.parser.url import UrlParser
 
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client = SocketClient()
 
 if __name__ == '__main__':
     loader = TomlLoader()
@@ -15,7 +14,7 @@ if __name__ == '__main__':
 
     host, port, uri = UrlParser.parse(server_url)
 
-    client.connect((host, port))
+    client.open_connection(host, port)
 
     request = (b'POST /send_sms HTTP/1.1\r\n'
                b'Host: localhost:4010\r\n'
@@ -23,17 +22,9 @@ if __name__ == '__main__':
                b'Content-Length: 72\r\n'
                b'\r\n{"sender": "88005553535", "recipient": "88005553536", "message": "test"}')
 
-    client.sendall(request)
-
-    response = b""
-    while True:
-        chunk = client.recv(4096)
-
-        if len(chunk) == 0:
-            break
-
-        response = response + chunk
+    client.send_data(request)
+    response = client.receive_date()
 
     print(response)
 
-    client.close()
+    client.close_connection()
