@@ -1,7 +1,7 @@
 import tomllib
 from typing import Any
 
-from config_loader.base import BaseLoader
+from utils.loader.base import BaseLoader
 
 
 class TomlLoader(BaseLoader):
