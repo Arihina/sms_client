@@ -2,6 +2,7 @@ class UrlParser:
     """
     A class for parsing strings with URL.
     """
+
     @staticmethod
     def parse(url: str) -> tuple[str, int, str]:
         """
