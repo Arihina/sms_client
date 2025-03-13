@@ -19,11 +19,21 @@ class HttpRequest(BaseHttp):
         :param body: A dictionary representing the body of the HTTP.
         """
 
-        super().__init__(version, body, content_type, content_length)
+        super().__init__(version, body)
         self.__method: str = method
         self.__uri: str = uri
         self.__host: str = host
         self.__auth: str = auth
+        self.__content_type: str = content_type
+        self.__content_length: str = content_length
+
+    @property
+    def content_type(self) -> str:
+        return self.__content_type
+
+    @property
+    def content_length(self) -> int:
+        return self.__content_length
 
     @property
     def method(self) -> str:
@@ -50,13 +60,14 @@ class HttpRequest(BaseHttp):
 
         request = f"{self.method} {self.uri} {self.version}\r\n".encode()
 
+        body = json.dumps(self.body).encode()
+        content_length = len(body)
+
         headers = f"Host: {self.host}\r\n"
-        headers += f"Authorization:{self.auth}"
+        headers += f"Authorization:{self.auth}\r\n"
         headers += f"Content-Type: {self.content_type}\r\n" if self.content_type else ""
         headers += f"Content-Length: {self.content_length}\r\n\r\n" if self.content_length else "\r\n"
         bytes_headers = headers.encode()
-
-        body = json.dumps(self.body).encode()
 
         return request + bytes_headers + body
 
