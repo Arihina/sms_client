@@ -1,6 +1,7 @@
 class BaseHttp:
-    def __init__(self, version: str, content_type: str = None,
-                 content_length: int = None, body: dict[str, str] = None):
+    def __init__(self, version: str, body: dict[str, str],
+                 content_type: str = "",
+                 content_length: int = 0):
         """
         Initializes a BaseHttp object representing a basic HTTP.
 
@@ -11,9 +12,9 @@ class BaseHttp:
         """
 
         self.__version: str = version
-        self.__content_type: str | None = content_type
-        self.__content_length: int | None = content_length
-        self.__body: dict[str, str] | None = body
+        self.__content_type: str = content_type
+        self.__content_length: int = content_length
+        self.__body: dict[str, str] = body
 
     @property
     def version(self) -> str:
@@ -30,19 +31,3 @@ class BaseHttp:
     @property
     def body(self) -> dict[str, str]:
         return self.__body
-
-    @version.setter
-    def version(self, version: str) -> None:
-        self.__version = version
-
-    @content_type.setter
-    def content_type(self, content_type: str) -> None:
-        self.__content_type = content_type
-
-    @content_length.setter
-    def content_length(self, content_length: int) -> None:
-        self.__content_length = content_length
-
-    @body.setter
-    def body(self, body: dict[str, str]) -> None:
-        self.__body = body

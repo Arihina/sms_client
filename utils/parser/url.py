@@ -18,9 +18,9 @@ class UrlParser:
             url_parts = url.split("/", 1)
             host_port, uri = url_parts[0], "/" + url_parts[1]
             host, port = host_port.split(":")
-            port = int(port)
+            int_port = int(port)
 
-            return host, port, uri
+            return host, int_port, uri
         except ValueError as e:
             raise ValueError(f"Value error in URL: {e}")
         except Exception as e:

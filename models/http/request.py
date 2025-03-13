@@ -4,9 +4,8 @@ from models.http.base import BaseHttp
 
 
 class HttpRequest(BaseHttp):
-    def __init__(self, method: str, uri: str, version: str, host: str, auth: str,
-                 content_type: str = None, content_length: int = None,
-                 body: dict[str, str] = None):
+    def __init__(self, method: str, uri: str, version: str, host: str, auth: str, body: dict[str, str],
+                 content_type: str = "", content_length: int = 0):
         """
         Initializes a HttpRequest object representing the HTTP request.
 
@@ -20,7 +19,7 @@ class HttpRequest(BaseHttp):
         :param body: A dictionary representing the body of the HTTP.
         """
 
-        super().__init__(version, content_type, content_length, body)
+        super().__init__(version, body, content_type, content_length)
         self.__method: str = method
         self.__uri: str = uri
         self.__host: str = host
@@ -42,22 +41,6 @@ class HttpRequest(BaseHttp):
     def auth(self) -> str:
         return self.__auth
 
-    @method.setter
-    def method(self, method: str) -> None:
-        self.__method = method
-
-    @uri.setter
-    def uri(self, uri: str) -> None:
-        self.__uri = uri
-
-    @host.setter
-    def host(self, host: str) -> None:
-        self.__host = host
-
-    @auth.setter
-    def auth(self, auth: str) -> None:
-        self.__auth = auth
-
     def to_bytes(self) -> bytes:
         """
         Serializes the HttpRequest object to a bytes.
@@ -71,11 +54,11 @@ class HttpRequest(BaseHttp):
         headers += f"Authorization:{self.auth}"
         headers += f"Content-Type: {self.content_type}\r\n" if self.content_type else ""
         headers += f"Content-Length: {self.content_length}\r\n\r\n" if self.content_length else "\r\n"
-        headers = headers.encode()
+        bytes_headers = headers.encode()
 
         body = json.dumps(self.body).encode()
 
-        return request + headers + body
+        return request + bytes_headers + body
 
     def __repr__(self):
         return (f"method {self.method}\n"

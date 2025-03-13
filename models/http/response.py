@@ -6,8 +6,7 @@ from models.http.base import BaseHttp
 class HttpResponse(BaseHttp):
     def __init__(self, version: str, date: str,
                  content_type: str, content_length: int,
-                 status_code: str,
-                 body: dict[str, str] | None):
+                 status_code: str, body: dict[str, str]):
         """
         Initializes a HttpResponse object representing the HTTP response.
 
@@ -19,9 +18,9 @@ class HttpResponse(BaseHttp):
         :param body: A dictionary representing the body of the HTTP.
         """
 
-        super().__init__(version, content_type, content_length, body)
-        self.__status_code = status_code
-        self.__date = date
+        super().__init__(version, body, content_type, content_length)
+        self.__status_code: str = status_code
+        self.__date: str = date
 
     @property
     def status_code(self) -> str:
@@ -30,14 +29,6 @@ class HttpResponse(BaseHttp):
     @property
     def date(self) -> str:
         return self.__date
-
-    @status_code.setter
-    def status_code(self, status_code: str) -> None:
-        self.__status_code = status_code
-
-    @date.setter
-    def date(self, date: str) -> None:
-        self.__date = date
 
     @classmethod
     def from_bytes(cls, binary_data: bytes):
@@ -48,13 +39,12 @@ class HttpResponse(BaseHttp):
         :return: HttpResponse object.
         """
 
-        headers, body = binary_data.split(b'\r\n\r\n', 1)
+        headers_bytes, body_bytes = binary_data.split(b'\r\n\r\n', 1)
 
-        body = body.decode()
-        body = json.loads(body)
-        body = {k: str(v) for k, v in body.items()}
+        body = json.loads(body_bytes.decode())
+        body_dict = {k: str(v) for k, v in body.items()}
 
-        headers = headers.decode().replace('www-authenticate: Basic\r\n', '').split('\r\n')
+        headers = headers_bytes.decode().replace('www-authenticate: Basic\r\n', '').split('\r\n')
         version, status_code = headers[0].split(' ', 1)
         date = headers[1][6::]
         content_length = int(headers[3][16::])
@@ -66,7 +56,7 @@ class HttpResponse(BaseHttp):
             date=date,
             content_length=content_length,
             content_type=content_type,
-            body=body
+            body=body_dict
         )
 
     def __repr__(self):

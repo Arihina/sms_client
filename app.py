@@ -113,8 +113,8 @@ class App:
                 content_length = len(json.dumps(body).encode())
 
                 request = HttpRequest("POST", url.uri, "HTTP/1.1",
-                                      url.host + ':' + str(url.port), auth,
-                                      "application/json", content_length, body).to_bytes()
+                                      url.host + ':' + str(url.port), auth, body,
+                                      "application/json", content_length).to_bytes()
 
                 try:
                     client.send_data(request)
