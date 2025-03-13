@@ -1,6 +1,6 @@
+import json
 import socket
 import tomllib
-import json
 from typing import Any
 
 from client_service.socket import SocketClient
@@ -8,6 +8,7 @@ from models.http.request import HttpRequest
 from models.http.response import HttpResponse
 from models.url import URL
 from models.user import User
+from utils.auth.basic import BasicAuth
 from utils.loader.toml import TomlLoader
 from utils.parser.url import UrlParser
 from utils.validator.phone_number import PhoneNumberValidator
@@ -102,7 +103,7 @@ class App:
                 if data is None:
                     continue
 
-                auth = "Basic dXNlcjoxMjM0NQ=="
+                auth = BasicAuth.get_encode(user)
 
                 body = {
                     "sender": data[0],
@@ -141,6 +142,3 @@ class App:
 
             else:
                 print("Invalid value")
-
-
-App.run()
