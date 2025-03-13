@@ -1,4 +1,5 @@
 import json
+import logging
 import socket
 import tomllib
 from typing import Any
@@ -73,6 +74,9 @@ class App:
 
         :return: None
         """
+        logger = logging.getLogger(__name__)
+        logging.basicConfig(filename='logs.log', level=logging.INFO)
+
         config = App.load_config()
 
         user = User(config['user']['name'], config['user']['password'])
@@ -118,14 +122,16 @@ class App:
 
                 try:
                     client.send_data(request)
+                    logger.info(f"Request: Sender: {data[0]} Recipient: {data[1]} Message: {data[2]}\n")
                 except socket.error as e:
                     print("Error sending message to the server")
                     exit(1)
 
                 try:
                     response = client.receive_date()
-                    response = HttpResponse.from_bytes(response)
+                    logger.info(f"Response: {response}")
 
+                    response = HttpResponse.from_bytes(response)
                     print(response)
                 except socket.error as e:
                     print("Error receiving data from the server")
@@ -136,7 +142,6 @@ class App:
                 try:
                     client.close_connection()
                 except socket.error as e:
-                    # log
                     exit(1)
                 break
 
