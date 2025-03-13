@@ -23,12 +23,13 @@ def test_to_binary():
 
     request = HttpRequest(
         "POST", "/send_sms", "HTTP/1.1",
-        "localhost:4010", "Basic " + base64.b64encode(auth).decode(), "application/json",
-        len(body), data).to_bytes()
+        "localhost:4010", "Basic " + base64.b64encode(auth).decode(), data, 'application/json',
+        len(body)).to_bytes()
 
     request_binary = (b'POST /send_sms HTTP/1.1\r\n'
                       b'Host: localhost:4010\r\n'
-                      b'Authorization:Basic dXNlcjoxMjM0NQ==Content-Type: application/json\r\n'
+                      b'Authorization:Basic dXNlcjoxMjM0NQ==\r\n'
+                      b'Content-Type: application/json\r\n'
                       b'Content-Length: 72\r\n'
                       b'\r\n{"sender": "88005553535", "recipient": "88005553536", "message": "test"}')
 
@@ -43,8 +44,7 @@ def test_from_binary():
         b'content-length: 42\r\n'
         b'content-type: application/json\r\n\r\n{"status":"success","message_id":"123456"}'
     )
-    request2 = HttpResponse("HTTP/1.1", "Tue, 11 Mar 2025 14:16:15 GMT",
-                            "application/json", 42, "200 OK",
+    request2 = HttpResponse("HTTP/1.1", "200 OK",
                             {"status": "success", "message_id": "123456"})
 
     assert str(request1) == str(request2)

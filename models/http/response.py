@@ -20,7 +20,6 @@ class HttpResponse(BaseHttp):
     def status_code(self) -> str:
         return self.__status_code
 
-
     @classmethod
     def from_bytes(cls, binary_data: bytes):
         """

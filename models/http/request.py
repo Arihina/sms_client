@@ -25,7 +25,7 @@ class HttpRequest(BaseHttp):
         self.__host: str = host
         self.__auth: str = auth
         self.__content_type: str = content_type
-        self.__content_length: str = content_length
+        self.__content_length: int = content_length
 
     @property
     def content_type(self) -> str:
@@ -61,7 +61,6 @@ class HttpRequest(BaseHttp):
         request = f"{self.method} {self.uri} {self.version}\r\n".encode()
 
         body = json.dumps(self.body).encode()
-        content_length = len(body)
 
         headers = f"Host: {self.host}\r\n"
         headers += f"Authorization:{self.auth}\r\n"
