@@ -54,7 +54,7 @@ class HttpResponse(BaseHttp):
         body = json.loads(body)
         body = {k: str(v) for k, v in body.items()}
 
-        headers = headers.decode().split('\r\n')
+        headers = headers.decode().replace('www-authenticate: Basic\r\n', '').split('\r\n')
         version, status_code = headers[0].split(' ', 1)
         date = headers[1][6::]
         content_length = int(headers[3][16::])
