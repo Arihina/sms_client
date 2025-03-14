@@ -17,10 +17,10 @@ python3 -m venv venv
 
 Activating the virtual environment
 ```commandline
-source .venv/bin/activate
+source venv/bin/activate
 ```
 
-Installing dependencies
+Installing dependencies (to run the tests)
 ```commandline
 pip3 install -r requirements.txt
 ```
@@ -47,7 +47,7 @@ Activating the virtual environment
 venv\Scripts\activate
 ```
 
-Installing dependencies
+Installing dependencies (to run the tests)
 ```commandline
 pip install -r requirements.txt
 ```
@@ -59,6 +59,6 @@ python main.py
 
 ## Dependencies
 
-This project depends on python interpreter 3.11 or higher
+This project depends on python interpreter 3.11 or higher.
 To run the tests, be sure to install the dependency from the file [requirements.txt](requirements.txt).
 Pytest is used for testing.

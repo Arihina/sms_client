@@ -1,6 +1,11 @@
+import os
+import sys
 from unittest.mock import MagicMock
 
 import pytest
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, project_root)
 
 from client_service.socket import SocketClient
 
